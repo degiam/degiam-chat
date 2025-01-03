@@ -8,4 +8,17 @@
   body {
     @apply font-sans cursor-default dark:bg-slate-900 dark:text-white;
   }
+  img {
+    @apply text-transparent;
+  }
+}
+
+.p-toast-message-icon {
+  @apply mt-[4px];
+}
+.p-toast-message-text {
+  @apply !block;
+}
+.p-toast-detail {
+  @apply my-[2px];
 }
