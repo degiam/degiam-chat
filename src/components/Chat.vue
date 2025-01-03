@@ -87,7 +87,7 @@ const initialValues: FormValue = reactive({
   },
 });
 
-const resolver = ({ values }) => {
+const resolver = ({ values }: { values: any }) => {
   const errors: Record<string, any> = {};
 
   if (!values.platform) {
@@ -95,20 +95,20 @@ const resolver = ({ values }) => {
   }
 
   if (selectedPlatform.value?.field?.phone) {
-    const cleanedPhone = cleanPhoneNumber(values.phone);
+    const cleanedPhone = cleanPhoneNumber(values.phone.value);
     if (!cleanedPhone) {
       errors.phone = [{ message: 'Nomor ponsel harus diisi' }];
     } else {
-      values.phone = cleanedPhone;
+      values.phone.value = cleanedPhone;
     }
   }
 
   if (selectedPlatform.value?.field?.username) {
-    const cleanedUsername = cleanUsername(values.username);
+    const cleanedUsername = cleanUsername(values.username.value);
     if (!cleanedUsername) {
       errors.username = [{ message: 'Username harus diisi' }];
     } else {
-      values.username = cleanedUsername;
+      values.username.value = cleanedUsername;
     }
   }
 
@@ -117,7 +117,7 @@ const resolver = ({ values }) => {
   };
 };
 
-const onFormSubmit = ({ valid }) => {
+const onFormSubmit = ({ valid }: { valid: boolean }) => {
   if (valid) {
     toast.add({
       severity: 'success',
@@ -142,7 +142,7 @@ watch(selectedPlatform, (newValue) => {
 
       <Toast />
 
-      <Form v-slot="$form" :initialValues="initialValues" :resolver="resolver" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
+      <Form :initialValues="initialValues" :resolver="resolver" @submit="onFormSubmit" class="flex flex-col gap-4 w-full">
         <FormField v-slot="$field" name="platform" initialValue="" class="flex flex-col gap-1">
           <Select v-model="selectedPlatform" :options="dataPlatform" checkmark :highlightOnSelect="false" optionLabel="name" placeholder="Silakan pilih..." fluid>
             <template #value="slotProps">
