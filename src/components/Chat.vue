@@ -2,14 +2,15 @@
 import { reactive, ref, watch } from 'vue';
 import { Form } from '@primevue/forms';
 import { FormField } from '@primevue/forms';
-import Toast from 'primevue/toast';
-import { useToast } from 'primevue/usetoast';
+// import Toast from 'primevue/toast';
+// import { useToast } from 'primevue/usetoast';
 import InputText from 'primevue/inputtext';
 import Select from 'primevue/select';
 import Button from 'primevue/button';
 import Message from 'primevue/message';
 import WhatsAppLogo from '../assets/brand-whatsapp.svg';
 import TelegramLogo from '../assets/brand-telegram.svg';
+import Brand from './Brand.vue';
 
 type Platform = {
   name: string,
@@ -43,9 +44,7 @@ const dataPlatform = ref([
 
 selectedPlatform.value = dataPlatform.value.find(platform => platform.code === 'whatsapp') || null;
 
-const toast = useToast();
-
-const initialValues: FormValue = reactive({
+const formData: FormValue = reactive({
   platform: '',
   phone: {
     show: false,
@@ -71,9 +70,9 @@ const cleanUsername = (value: string): string => {
 };
 
 const validateInputPhone = () => {
-  initialValues.phone.value = cleanPhoneNumber(initialValues.phone.value);
+  formData.phone.value = cleanPhoneNumber(formData.phone.value);
 
-  const phone = initialValues.phone.value;
+  const phone = formData.phone.value;
 
   if (!phone.startsWith('08') && !phone.startsWith('+')) {
     phoneError.value = 'Nomor ponsel harus diawali dengan 08 atau +';
@@ -84,9 +83,9 @@ const validateInputPhone = () => {
   }
 };
 const validateInputUsername = () => {
-  initialValues.username.value = cleanUsername(initialValues.username.value);
+  formData.username.value = cleanUsername(formData.username.value);
 
-  const username = initialValues.username.value;
+  const username = formData.username.value;
 
   if (!usernamePattern.test(username)) {
     usernameError.value = 'Username tidak boleh mengandung spasi';
@@ -101,6 +100,10 @@ const preventInvalidPhone = (event: KeyboardEvent) => {
   const currentValue = input.value;
   const cursorPosition = input.selectionStart || 0;
   const allowedChars = /^\d$/;
+
+  if (key === 'Enter') {
+    return;
+  }
 
   if (key === '+') {
     if (cursorPosition !== 0 || currentValue.includes('+')) {
@@ -144,32 +147,46 @@ const resolver = ({ values }: { values: any }) => {
   return { errors };
 };
 
+// const toast = useToast();
+
 const onFormSubmit = ({ valid }: { valid: boolean }) => {
   if (valid) {
-    toast.add({
-      severity: 'success',
-      summary: 'Form berhasil dikirim',
-      detail: 'Terima kasih atas partisipasinya',
-      life: 5000
-    });
+    if (selectedPlatform.value?.code === 'whatsapp') {
+      const link = `https://wa.me/${formData.phone.value}`;
+      window.open(link, '_blank');
+    } else if (selectedPlatform.value?.code === 'telegram') {
+      const link = `https://t.me/${formData.username.value}`;
+      window.open(link, '_blank');
+    }
+
+    // toast.add({
+    //   severity: 'success',
+    //   summary: 'Form berhasil dikirim',
+    //   detail: 'Terima kasih atas partisipasinya',
+    //   life: 5000
+    // });
   }
 };
 
 watch(selectedPlatform, (newValue) => {
   if (newValue) {
-    initialValues.phone.show = newValue.field.phone;
-    initialValues.username.show = newValue.field.username;
+    formData.phone.show = newValue.field.phone;
+    formData.username.show = newValue.field.username;
   }
 }, { immediate: true });
 </script>
 
 <template>
   <div class="flex justify-center items-center min-h-screen p-6 main-layout">
-    <div class="w-full max-w-lg">
+    <div class="w-full max-w-lg mb-6">
 
-      <Toast />
+      <div class="w-fit mx-auto mb-4">
+        <Brand />
+      </div>
 
-      <Form :initialValues="initialValues" :resolver="resolver" @submit="onFormSubmit" class="flex flex-col gap-8 w-full">
+      <!-- <Toast /> -->
+
+      <Form :initialValues="formData" :resolver="resolver" @submit="onFormSubmit" class="flex flex-col gap-6 w-full">
         <FormField v-slot="$field" name="platform" initialValue="whatsapp" class="flex flex-col gap-1">
           <Select v-model="selectedPlatform" :options="dataPlatform" checkmark :highlightOnSelect="false" optionLabel="name" placeholder="Silakan pilih..." fluid class="rounded-lg [&.p-focus]:shadow-[2px_2px_0_#22d3ee,-2px_2px_0_#22d3ee,2px_-2px_0_#22d3ee,-2px_-2px_0_#22d3ee]">
             <template #value="slotProps">
@@ -193,10 +210,10 @@ watch(selectedPlatform, (newValue) => {
           <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $field.error?.message }}</Message>
         </FormField>
 
-        <FormField v-if="initialValues.phone.show" v-slot="$field" name="phone" initialValue="" class="flex flex-col gap-1">
+        <FormField v-if="formData.phone.show" v-slot="$field" name="phone" initialValue="" class="flex flex-col gap-1">
           <InputText
-            v-model="initialValues.phone.value"
-            @keypress="preventInvalidPhone"
+            v-model="formData.phone.value"
+            @keydown="preventInvalidPhone"
             @input="validateInputPhone"
             type="tel"
             inputmode="numeric"
@@ -207,10 +224,10 @@ watch(selectedPlatform, (newValue) => {
           <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $field.error?.message }}</Message>
         </FormField>
 
-        <FormField v-if="initialValues.username.show" v-slot="$field" name="username" initialValue="" class="flex flex-col gap-1">
+        <FormField v-if="formData.username.show" v-slot="$field" name="username" initialValue="" class="flex flex-col gap-1">
           <InputText
-            v-model="initialValues.username.value"
-            @keypress="preventInvalidUsername"
+            v-model="formData.username.value"
+            @keydown="preventInvalidUsername"
             @input="validateInputUsername"
             type="text"
             placeholder="Username"
@@ -220,7 +237,7 @@ watch(selectedPlatform, (newValue) => {
           <Message v-if="$field?.invalid" severity="error" size="small" variant="simple">{{ $field.error?.message }}</Message>
         </FormField>
 
-        <Button type="submit" severity="primary" label="Chat Sekarang" class="rounded-lg text-white bg-cyan-500 hover:bg-cyan-600" />
+        <Button type="submit" severity="primary" label="Chat Sekarang" class="rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 mt-4" />
       </Form>
 
     </div>

@@ -67,7 +67,7 @@ const mainClass = computed(() => {
 
 <template>
   <main :class="mainClass">
-    <h1 class="sr-only">QuiChat by Degiam</h1>
+    <h1 class="sr-only">KieChat by Degiam</h1>
     <Chat />
   </main>
 </template>

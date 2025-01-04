@@ -3,7 +3,7 @@ import './style.css'
 import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import Lara from '@primevue/themes/lara';
-import ToastService from 'primevue/toastservice';
+// import ToastService from 'primevue/toastservice';
 
 const app = createApp(App);
 app.use(PrimeVue, {
@@ -19,5 +19,5 @@ app.use(PrimeVue, {
     },
   },
 });
-app.use(ToastService);
+// app.use(ToastService);
 app.mount('#app');
