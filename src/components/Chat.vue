@@ -370,11 +370,7 @@ const onFormSubmit = ({ valid }: { valid: boolean }) => {
     }
 
     if (link) {
-      if (window.innerWidth > 768) {
-        window.open(link, '_blank');
-      } else {
-        window.location.href = link;
-      }
+      window.open(link, '_blank');
     }
 
     // toast.add({
