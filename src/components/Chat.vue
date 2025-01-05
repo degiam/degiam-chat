@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from 'vue';
+import { onMounted, onUnmounted, reactive, ref, watch } from 'vue';
 import { Form } from '@primevue/forms';
 import { FormField } from '@primevue/forms';
 // import Toast from 'primevue/toast';
@@ -370,7 +370,15 @@ const onFormSubmit = ({ valid }: { valid: boolean }) => {
     }
 
     if (link) {
-      window.open(link, '_blank');
+      if (insideIframe.value) {
+        window.parent.postMessage({ type: 'link', link }, '*');
+      } else {
+        if (window.innerWidth > 768) {
+          window.open(link, '_blank');
+        } else {
+          window.location.href = link;
+        }
+      }
     }
 
     // toast.add({
@@ -388,6 +396,21 @@ watch(selectedPlatform, (newValue) => {
     formData.username.show = newValue.field.username;
   }
 }, { immediate: true });
+
+const insideIframe = ref(false);
+
+onMounted(() => {
+  const messageListener = (event: MessageEvent) => {
+    if (event.data?.type === 'child-inside-iframe') {
+      insideIframe.value = event.data.value;
+    }
+  };
+  window.addEventListener('message', messageListener);
+
+  onUnmounted(() => {
+    window.removeEventListener('message', messageListener);
+  });
+});
 </script>
 
 <template>
@@ -481,7 +504,7 @@ watch(selectedPlatform, (newValue) => {
           <Message v-if="$field?.invalid" severity="error" size="small" variant="simple" class="mt-1">{{ $field.error?.message }}</Message>
         </FormField>
 
-        <Button type="submit" severity="primary" label="Chat Sekarang" class="rounded-lg text-white bg-cyan-500 hover:bg-cyan-600 mt-4" />
+        <Button type="submit" severity="primary" label="Chat Sekarang" class="rounded-lg text-white border-cyan-500 bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-500 mt-4" />
       </Form>
 
     </div>

@@ -5,12 +5,12 @@ import Chat from './components/Chat.vue';
 const isStandalone = ref(false);
 const isMobile = ref(false);
 
-const sendHeightToParent = () => {
-  const height = document.body.scrollHeight;
-  window.parent.postMessage({ type: 'resize', height }, '*');
-};
+// const sendHeightToParent = () => {
+//   const height = document.body.scrollHeight;
+//   window.parent.postMessage({ type: 'resize', height }, '*');
+// };
 
-const observer = new MutationObserver(sendHeightToParent);
+// const observer = new MutationObserver(sendHeightToParent);
 
 const updateTheme = (isDarkMode: boolean) => {
   if (isDarkMode) {
@@ -21,15 +21,15 @@ const updateTheme = (isDarkMode: boolean) => {
 };
 
 onMounted(() => {
-  sendHeightToParent();
-  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+  // sendHeightToParent();
+  // observer.observe(document.body, { childList: true, subtree: true, attributes: true });
 
-  const messageListener = (event: MessageEvent) => {
+  const themeListener = (event: MessageEvent) => {
     if (event.data?.type === 'theme-change') {
       updateTheme(event.data.isDarkMode);
     }
   };
-  window.addEventListener('message', messageListener);
+  window.addEventListener('message', themeListener);
 
   const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
   updateTheme(mediaQuery.matches);
@@ -48,8 +48,8 @@ onMounted(() => {
   window.addEventListener('message', handleScreenSizeMessage);
 
   onUnmounted(() => {
-    observer.disconnect();
-    window.removeEventListener('message', messageListener);
+    // observer.disconnect();
+    window.removeEventListener('message', themeListener);
     window.removeEventListener('message', handleScreenSizeMessage);
     mediaQuery.removeEventListener('change', handleMediaChange);
   });
