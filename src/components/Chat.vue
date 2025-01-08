@@ -454,7 +454,7 @@ onMounted(() => {
               <Select v-model="selectedCountry" :options="dataCountry" name="country" initialValue="+62" filter checkmark :highlightOnSelect="false" optionLabel="title" placeholder="Silakan pilih..." fluid class="rounded-lg [&.p-focus]:shadow-[2px_2px_0_#22d3ee,-2px_2px_0_#22d3ee,2px_-2px_0_#22d3ee,-2px_-2px_0_#22d3ee]">
                 <template #value="slotProps">
                   <div v-if="slotProps.value" class="flex items-center mr-4">
-                    <img v-if="slotProps.value.name" :alt="slotProps.value.name" :src="`https://flagcdn.com/w20/${slotProps.value.name.toLowerCase()}.png`" @error="slotProps.value.name = fallbackImage" class="w-7 h-5 object-contain mr-2 border" />
+                    <img v-if="slotProps.value.name" :alt="slotProps.value.name" :src="`https://flagcdn.com/w20/${slotProps.value.name.toLowerCase()}.png`" @error="slotProps.value.name = fallbackImage" class="w-7 h-5 mr-2 border" />
                     <div v-else class="w-7 h-5 bg-gray-200 mr-2"></div>
                     <div>{{ slotProps.value.code }}</div>
                   </div>
@@ -464,7 +464,7 @@ onMounted(() => {
                 </template>
                 <template #option="slotProps">
                   <div class="flex items-center w-full">
-                    <img v-if="slotProps.option.name" :alt="slotProps.option.name" :src="`https://flagcdn.com/w20/${slotProps.option.name.toLowerCase()}.png`" @error="slotProps.option.name = fallbackImage" class="w-7 h-5 object-contain mr-2 border" />
+                    <img v-if="slotProps.option.name" :alt="slotProps.option.name" :src="`https://flagcdn.com/w20/${slotProps.option.name.toLowerCase()}.png`" @error="slotProps.option.name = fallbackImage" class="w-7 h-5 mr-2 border" />
                     <div v-else class="w-7 h-5 bg-gray-200 mr-2"></div>
                     <div class="flex justify-between gap-2 w-full">
                       <div>{{ slotProps.option.code }}</div>
