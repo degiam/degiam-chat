@@ -505,7 +505,7 @@ onMounted(() => {
           <Message v-if="$field?.invalid" severity="error" size="small" variant="simple" class="mt-1">{{ $field.error?.message }}</Message>
         </FormField>
 
-        <Button type="submit" severity="primary" label="Chat Sekarang" class="rounded-lg text-white border-cyan-500 bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-500 mt-4" />
+        <Button type="submit" severity="primary" label="Chat Sekarang" class="rounded-lg text-white border-cyan-500 bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-500" />
       </Form>
 
       <Built />
