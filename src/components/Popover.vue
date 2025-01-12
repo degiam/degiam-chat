@@ -21,7 +21,7 @@ const handleMouseMove = (event: MouseEvent) => {
     screenWidth - maxPopoverWidth - popoverPadding
   );
   position.y = Math.min(
-    clientY + 50,
+    clientY + 65,
     screenHeight - popoverPadding
   );
 };
