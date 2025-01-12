@@ -12,6 +12,7 @@ import WhatsAppLogo from '../assets/brand-whatsapp.svg';
 import TelegramLogo from '../assets/brand-telegram.svg';
 import Brand from './Brand.vue';
 import Built from './Built.vue';
+import Popover from './Popover.vue';
 
 type Platform = {
   name: string,
@@ -419,7 +420,11 @@ onMounted(() => {
     <div class="w-full max-w-lg mb-10 md:mb-16">
 
       <div class="w-fit mx-auto mb-4">
-        <Brand />
+        <Popover content="Kamu bisa chat siapa pun tanpa harus menyimpan nomornya">
+          <template #default>
+            <Brand />
+          </template>
+        </Popover>
       </div>
 
       <!-- <Toast /> -->
