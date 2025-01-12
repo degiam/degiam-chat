@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 
-@layer primevue, tailwind-base,  tailwind-utilities;
+@layer primevue, tailwind-base, tailwind-utilities;
 
 @layer tailwind-base {
   @tailwind base;
@@ -20,6 +20,12 @@
   }
   img {
     @apply text-transparent;
+  }
+}
+
+@layer utilities {
+  .break-word {
+    word-break: break-word;
   }
 }
 
