@@ -305,6 +305,10 @@ const preventInvalidPhone = (event: KeyboardEvent) => {
   const cursorPosition = input.selectionStart || 0;
   const allowedChars = /^\d$/;
 
+  if ((event.ctrlKey || event.metaKey) && key === 'a') {
+    return;
+  }
+
   if (whitelistKeys.includes(key)) {
     return;
   }
@@ -323,6 +327,10 @@ const preventInvalidPhone = (event: KeyboardEvent) => {
 const preventInvalidUsername = (event: KeyboardEvent) => {
   const allowedChars = /^[^\s]$/;
   const key = event.key;
+
+  if ((event.ctrlKey || event.metaKey) && key === 'a') {
+    return;
+  }
 
   if (whitelistKeys.includes(key)) {
     return;
