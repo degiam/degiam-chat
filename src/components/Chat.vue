@@ -260,7 +260,7 @@ const formData: FormValue = reactive({
 const phoneError = ref('');
 const usernameError = ref('');
 
-const phonePattern = /^(?:\+|08)[0-9]{9,14}$/;
+const phonePattern = /^(?:\+|08)[0-9]{8,14}$/;
 const usernamePattern = /^[^\s]+$/;
 
 const whitelistKeys = ['Enter', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowTop', 'ArrowBottom', 'Tab'];
@@ -280,7 +280,7 @@ const validateInputPhone = () => {
   if (!phone.startsWith('08') && !phone.startsWith('+')) {
     phoneError.value = 'Nomor ponsel harus diawali dengan 08 atau +';
   } else if (!phonePattern.test(phone)) {
-    phoneError.value = 'Nomor ponsel minimal 10 digit dan maksimal 15 digit';
+    phoneError.value = 'Nomor ponsel minimal 9 digit dan maksimal 15 digit';
   } else {
     phoneError.value = '';
   }
