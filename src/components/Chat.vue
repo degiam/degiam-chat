@@ -263,7 +263,7 @@ const usernameError = ref('');
 const phonePattern = /^(?:\+|08)[0-9]{8,14}$/;
 const usernamePattern = /^[^\s]+$/;
 
-const whitelistKeys = ['Enter', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowTop', 'ArrowBottom', 'Tab'];
+const whitelistKeys = ['Enter', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab'];
 
 const cleanPhoneNumber = (value: string): string => {
   return value.replace(/(?!^\+)[^\d]/g, '');
@@ -305,7 +305,11 @@ const preventInvalidPhone = (event: KeyboardEvent) => {
   const cursorPosition = input.selectionStart || 0;
   const allowedChars = /^\d$/;
 
-  if ((event.ctrlKey || event.metaKey) && key === 'a') {
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'a') {
+    return;
+  }
+
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'v') {
     return;
   }
 
