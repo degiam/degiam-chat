@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import Chat from './components/Chat.vue';
 
-const isStandalone = ref(false);
+const isChild = ref(false);
 const isMobile = ref(false);
 
 // const sendHeightToParent = () => {
@@ -41,7 +41,7 @@ onMounted(() => {
 
   const handleScreenSizeMessage = (event: MessageEvent) => {
     if (event.data?.type === 'screen-size') {
-      isStandalone.value = true;
+      isChild.value = true;
       isMobile.value = event.data.isMobile;
     }
   };
@@ -56,7 +56,7 @@ onMounted(() => {
 });
 
 const mainClass = computed(() => {
-  if (isStandalone.value) {
+  if (isChild.value) {
     return isMobile.value
       ? '[&_.main-layout]:max-md:pb-24'
       : '[&_.main-layout]:md:pt-24';
@@ -67,7 +67,7 @@ const mainClass = computed(() => {
 
 <template>
   <main :class="mainClass">
-    <h1 class="sr-only">KieChat by Degiam</h1>
+    <h1 v-if="!isChild" class="sr-only">KieChat by Degiam</h1>
     <Chat />
   </main>
 </template>
