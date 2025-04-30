@@ -441,7 +441,7 @@ onMounted(() => {
 
       <!-- <Toast /> -->
 
-      <Form :initialValues="formData" :resolver="resolver" @submit="onFormSubmit" class="flex flex-col gap-6 w-full">
+      <Form :resolver="resolver" @submit="onFormSubmit" class="flex flex-col gap-6 w-full">
         <FormField v-slot="$field" name="platform" initialValue="whatsapp" class="flex flex-col gap-1">
           <Select v-model="selectedPlatform" :options="dataPlatform" checkmark :highlightOnSelect="false" optionLabel="name" placeholder="Silakan pilih..." fluid class="rounded-lg [&.p-focus]:shadow-[2px_2px_0_#22d3ee,-2px_2px_0_#22d3ee,2px_-2px_0_#22d3ee,-2px_-2px_0_#22d3ee]">
             <template #value="slotProps">
